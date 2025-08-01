@@ -1,0 +1,44 @@
+/* AssessorOffice.css */
+/* Include all your custom styles here */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  min-width: 1000px;
+}
+
+.search-box {
+  transition: all 0.3s;
+}
+
+.search-box:focus {
+  box-shadow: 0 0 0 3px rgba(93, 43, 153, 0.2);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.blgf-logo {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}

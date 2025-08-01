@@ -1,0 +1,283 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      James Bryan | Real Estate Appraiser & Civil Service Professional
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#FFD100",
+              secondary: "#5D2B99",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+        animation: fadeIn 0.5s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .table-container {
+        overflow-x: auto;
+      }
+      table {
+        min-width: 1000px;
+      }
+      .search-box {
+        transition: all 0.3s;
+      }
+      .search-box:focus {
+        box-shadow: 0 0 0 3px rgba(93, 43, 153, 0.2);
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .blgf-logo {
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+  <script>
+    // Tab functionality
+    function openTab(evt, tabName) {
+        var i, tabcontent, tabbuttons;
+        
+        // Hide all tab content
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        
+        // Remove active class from all tab buttons
+        tabbuttons = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tabbuttons.length; i++) {
+            tabbuttons[i].classList.remove("bg-primary", "text-gray-900");
+            tabbuttons[i].classList.add("text-gray-700");
+        }
+        
+        // Show the current tab and add active class to the button
+        document.getElementById(tabName).classList.add("active");
+        if (evt.currentTarget) {
+            evt.currentTarget.classList.add("bg-primary", "text-gray-900");
+            evt.currentTarget.classList.remove("text-gray-700");
+        }
+        
+        // Close mobile menu if open
+        document.getElementById('mobile-menu').classList.add('hidden');
+    }
+    
+    // Set default tab
+    document.getElementById("defaultOpen").click();
+    
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        var menu = document.getElementById('mobile-menu');
+        if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+        } else {
+            menu.classList.add('hidden');
+        }
+    });
+    
+    // Table sorting function
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.querySelector(".table-container table");
+        switching = true;
+        dir = "asc";
+        
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+        
+        // Update sort icons
+        var headers = table.getElementsByTagName("TH");
+        for (i = 0; i < headers.length; i++) {
+            var icon = headers[i].querySelector("i");
+            if (icon) {
+                if (i == n) {
+                    icon.className = dir == "asc" ? "fas fa-sort-up ml-1" : "fas fa-sort-down ml-1";
+                } else {
+                    icon.className = "fas fa-sort ml-1";
+                }
+            }
+        }
+    }
+    
+    // Search functionality for each tab
+    document.getElementById('directory-search').addEventListener('input', function() {
+        filterTable('directory-search', 'directory');
+    });
+    
+    document.getElementById('smv-search').addEventListener('input', function() {
+        filterTable('smv-search', 'smv');
+    });
+    
+    document.getElementById('qrrpa-search').addEventListener('input', function() {
+        filterTable('qrrpa-search', 'qrrpa');
+    });
+    
+    function filterTable(searchId, tableType) {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById(searchId);
+        filter = input.value.toUpperCase();
+        table = document.getElementById(tableType).getElementsByTagName("table")[0];
+        tr = table.getElementsByTagName("tr");
+        
+        for (i = 1; i < tr.length; i++) {
+            var found = false;
+            td = tr[i].getElementsByTagName("td");
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            tr[i].style.display = found ? "" : "none";
+        }
+    }
+    
+    // Filter functionality for dropdowns
+    document.getElementById('directory-region-filter').addEventListener('change', function() {
+        applyFilters('directory');
+    });
+    
+    document.getElementById('directory-lgu-filter').addEventListener('change', function() {
+        applyFilters('directory');
+    });
+    
+    document.getElementById('smv-region-filter').addEventListener('change', function() {
+        applyFilters('smv');
+    });
+    
+    document.getElementById('smv-lgu-filter').addEventListener('change', function() {
+        applyFilters('smv');
+    });
+    
+    document.getElementById('smv-status-filter').addEventListener('change', function() {
+        applyFilters('smv');
+    });
+    
+    document.getElementById('qrrpa-lgu-filter').addEventListener('change', function() {
+        applyFilters('qrrpa');
+    });
+    
+    document.getElementById('qrrpa-status-filter').addEventListener('change', function() {
+        applyFilters('qrrpa');
+    });
+    
+    document.getElementById('qrrpa-quarter-filter').addEventListener('change', function() {
+        applyFilters('qrrpa');
+    });
+    
+    function applyFilters(tableType) {
+        var table = document.getElementById(tableType).getElementsByTagName("table")[0];
+        var tr = table.getElementsByTagName("tr");
+        
+        // Get filter values
+        var regionFilter = document.getElementById(tableType + '-region-filter') ? document.getElementById(tableType + '-region-filter').value.toUpperCase() : '';
+        var lguFilter = document.getElementById(tableType + '-lgu-filter') ? document.getElementById(tableType + '-lgu-filter').value.toUpperCase() : '';
+        var statusFilter = document.getElementById(tableType + '-status-filter') ? document.getElementById(tableType + '-status-filter').value.toUpperCase() : '';
+        var quarterFilter = document.getElementById(tableType + '-quarter-filter') ? document.getElementById(tableType + '-quarter-filter').value.toUpperCase() : '';
+        
+        // Loop through all table rows
+        for (var i = 1; i < tr.length; i++) {
+            var td = tr[i].getElementsByTagName("td");
+            var regionMatch = true;
+            var lguMatch = true;
+            var statusMatch = true;
+            var quarterMatch = true;
+            
+            // Check region filter
+            if (regionFilter && tableType !== 'qrrpa') {
+                var regionValue = td[0].textContent || td[0].innerText;
+                regionMatch = regionValue.toUpperCase().indexOf(regionFilter) > -1;
+            }
+            
+            // Check LGU filter
+            if (lguFilter) {
+                var lguIndex = tableType === 'qrrpa' ? 0 : 2;
+                var lguValue = td[lguIndex].textContent || td[lguIndex].innerText;
+                lguMatch = lguValue.toUpperCase().indexOf(lguFilter) > -1;
+            }
+            
+            // Check status filter
+            if (statusFilter && tableType !== 'directory') {
+                var statusIndex = tableType === 'smv' ? 11 : 4;
+                var statusValue = td[statusIndex].textContent || td[statusIndex].innerText;
+                statusMatch = statusValue.toUpperCase().indexOf(statusFilter) > -1;
+            }
+            
+            // Check quarter filter
+            if (quarterFilter && tableType === 'qrrpa') {
+                var quarterValue = td[1].textContent || td[1].innerText;
+                quarterMatch = quarterValue.toUpperCase().indexOf(quarterFilter) > -1;
+            }
+            
+            // Show/hide row based on filters
+            tr[i].style.display = (regionMatch && lguMatch && statusMatch && quarterMatch) ? "" : "none";
+        }
+    }
+</script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=Manny123456789/assessors-office" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+
+</html>
