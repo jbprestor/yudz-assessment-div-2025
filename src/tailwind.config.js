@@ -1,12 +1,12 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
       colors: {
-        primary: '#FFD100',
-        secondary: '#5D2B99',
-      }
+        primary: "#004A99", // BLGF blue
+        primaryLight: "#336EB3", // lighter shade for hover
+      },
     },
   },
   plugins: [],
-}
+};

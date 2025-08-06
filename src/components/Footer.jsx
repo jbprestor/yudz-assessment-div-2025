@@ -32,11 +32,11 @@ export default function Footer() {
                 jbryan@rosario.gov.ph
               </li>
               <li className="flex items-center text-sm opacity-80">
-                <i class="fas fa-phone-alt mr-2"></i>
+                <i className="fas fa-phone-alt mr-2"></i>
                 +63 912 345 6789
               </li>
               <li className="flex items-center text-sm opacity-80">
-                <i class="fas fa-map-marker-alt mr-2"></i>
+                <i className="fas fa-map-marker-alt mr-2"></i>
                 Municipal Hall, Rosario, Agusan del Norte
               </li>
             </ul>

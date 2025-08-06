@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 export default function CurrentStatusSection() {
   return (
     <section className="mb-12">
@@ -10,10 +8,7 @@ export default function CurrentStatusSection() {
         {/* SMV Progress Card */}
         <div className="bg-white p-6 rounded-xl shadow-md">
           <h3 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
-            <FontAwesomeIcon
-              icon={['fas', 'map-marker-alt']}
-              className="text-primary mr-2"
-            />
+            <i className="fas fa-map-marker-alt text-primary mr-2" />
             Municipality of Rosario
           </h3>
           <div className="space-y-4">
@@ -40,10 +35,7 @@ export default function CurrentStatusSection() {
         {/* Upcoming Deadlines Card */}
         <div className="bg-white p-6 rounded-xl shadow-md">
           <h3 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
-            <FontAwesomeIcon
-              icon={['fas', 'calendar-alt']}
-              className="text-primary mr-2"
-            />
+            <i className="fas fa-calendar-alt text-primary mr-2" />
             Upcoming Deadlines
           </h3>
           <div className="space-y-3">
